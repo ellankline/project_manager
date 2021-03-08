@@ -5,9 +5,9 @@ require('./config/mongoose.config');
 
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 
-require('./routes/product.routes');
+require('./routes/product.routes')(app);
 app.listen(8000, () => {
     console.log("Listening at Port 8000")
 })

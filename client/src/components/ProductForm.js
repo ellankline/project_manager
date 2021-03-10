@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 import axios from 'axios';
-const ProductForm = () => {
+const ProductForm = (props) => {
+    const {id} = props;
     const [Title, setTitle] = useState("");
     const [Price, setPrice] = useState("");
     const [Description, setDescription] = useState("");
+    const [allProducts, setAllProducts] = useState([]);
     const onSubmitHandler = e => {
-        e.preventDefault();
+        //e.preventDefault();
         axios.post('http://localhost:8000/api/products', {
             Title,
             Price,
@@ -13,6 +15,8 @@ const ProductForm = () => {
         })
             .then(res=>console.log(res))
             .catch(err=>console.log(err))
+            const filteredProducts = allProducts.filter((product) => product._id !== id);
+            setAllProducts(filteredProducts);
     }
     return (
         <form onSubmit={onSubmitHandler}>

@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link, navigate } from "@reach/router";
 
-const ProductList = (props) => {
+const DeleteButton = (props) => {
     const [allProducts, setAllProducts] = useState([]);
-
+    const {id} = props;
     useEffect(() => {
         axios
             .get('http://localhost:8000/api')
@@ -16,9 +16,8 @@ const ProductList = (props) => {
                 console.log(err);
             }))
     }, [])
-    
-    const deleteProduct = (id) => {
-        axios.delete('http://localhost:8000/api/' + id)
+    const deleteProduct = (props) => {
+        axios.delete("http://localhost:8000/api/" + id)
             .then((res) => {
                 const deletedProduct = res.data;
                 console.log(deletedProduct);
@@ -26,21 +25,12 @@ const ProductList = (props) => {
                 setAllProducts(filteredProducts);
             });
         navigate(`/products`);
-    }
+    };
+
     return (
         <div>
-            {allProducts.map((product, idx) => (
-                    <p key={idx}>
-                    <Link to={"/products/" + product._id}>
-                        {product.Title}
-                    </Link>
-                    <br/>
-                    <button onClick={(e)=>navigate(`/products/edit/${product._id}`)}>Edit</button>
-                    <button onClick={(e)=>deleteProduct(product._id) }>Delete</button>
-                    </p>
-            ))}
+        <button onClick={()=>deleteProduct(this.product._id)}>Delete</button>
         </div>
-    );
+    )
 };
-
-export default ProductList;
+export default DeleteButton;

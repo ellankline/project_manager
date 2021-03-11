@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Link, navigate } from "@reach/router";
+import { navigate } from "@reach/router";
 
 
 const Detail = (props) => {
@@ -19,8 +19,9 @@ const Detail = (props) => {
             .then((res) => {
                 const deletedProduct = res.data;
                 console.log(deletedProduct);
-            })
-    }
+            });
+            navigate(`/products`);
+    };
 
     return (
         <div>
@@ -28,7 +29,7 @@ const Detail = (props) => {
             <p>Price: {product.Price}</p>
             <p>Description: {product.Description}</p>
             <br/>
-            <Link to="/products" onClick={(e)=>deleteProduct(product._id) }>Delete</Link>
+            <button onClick={(e)=>deleteProduct(product._id) }>Delete</button>
         </div>
     )
 };

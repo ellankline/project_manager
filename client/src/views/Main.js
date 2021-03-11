@@ -1,5 +1,5 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import ProductForm from '../components/ProductForm';
 import ProductList from '../components/ProductList';
 
@@ -14,13 +14,23 @@ const Main = () => {
                 setLoaded(true);
             });
     }, []);
+    
+    const removeFromDom = id => {
+        setProducts(products.filter(product => product._id !== id));
+    }
+    const createProduct = product => {
+        axios.post('http://localhost:8000/api/products', {product})
+            .then (res => {
+                setProducts([...products, res.data]);
+            })
+    }
 
     return (
         <div>
             <h2>Product Manager</h2>
-            <ProductForm />
+            <ProductForm onSubmitProp={createProduct} initialTitle="" initialPrice="" initialDescription=""/>
             <hr/>
-            { loaded && <ProductList products ={products}/> }
+            { loaded && <ProductList products ={products} removeFromDom={removeFromDom}/> }
         </div>
     )
 }

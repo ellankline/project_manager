@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import axios from 'axios';
+import { navigate } from "@reach/router";
 const ProductForm = (props) => {
     const {id} = props;
     const [Title, setTitle] = useState("");
@@ -17,6 +18,7 @@ const ProductForm = (props) => {
             .catch(err=>console.log(err))
             const filteredProducts = allProducts.filter((product) => product._id !== id);
             setAllProducts(filteredProducts);
+            navigate(`/products`);
     }
     return (
         <form onSubmit={onSubmitHandler}>
@@ -28,7 +30,7 @@ const ProductForm = (props) => {
             <p>
                 <label>Price</label>
                 <br/>
-                <input type="number" onChange = {(e)=>setPrice(e.target.value)}/>
+                <input type="text" onChange = {(e)=>setPrice(e.target.value)}/>
             </p>
             <p>
                 <label>Description</label>

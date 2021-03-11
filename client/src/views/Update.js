@@ -1,28 +1,22 @@
-import React, { useEffect, useState, useFindAndModify } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import ProductForm from '../components/ProductForm'
 
 const Update = (props) => {
     const {id} = props;
-    const [Title, setTitle] = useState("");
-    const [Price, setPrice] = useState("");
-    const [Description, setDescription] = useState("");
+    const [product, setProduct] = useState();
+    const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
         axios.get('http://localhost:8000/api/' + id)
             .then((res)=>{
-                setTitle(res.data.Title);
-                setPrice(res.data.Price);
-                setDescription(res.data.Description);
+                setProduct(res.data);
+                setLoaded(true);
             })
     }, []);
 
-    const updateProduct = (e) => {
-        e.preventDefault();
-        axios.put('http://localhost:8000/api/' + id, {
-            Title,
-            Price,
-            Description
-        })
+    const updateProduct = product => {
+        axios.put('http://localhost:8000/api/' + id, {product}) // {
             .then(res => console.log(res))
             .catch(err=>console.log(err))
     };
@@ -30,35 +24,17 @@ const Update = (props) => {
     return (
         <div>
             <h2>Update Product</h2>
-            <form onSubmit={updateProduct}>
-                <p>
-                    <label>Title</label>
-                    <br/>
-                    <input type="text"
-                    name="title"
-                    value={Title}
-                    onChange={(e) => {setTitle(e.target.value)}} />
-                </p>
-                <p>
-                    <label>Price</label>
-                    <br/>
-                    <input type="text"
-                    name="price"
-                    value={Price}
-                    onChange={(e) => {setPrice(e.target.value)}} />
-                </p>
-                <p>
-                    <label>Description</label>
-                    <br/>
-                    <input type="text"
-                    name="description"
-                    value={Description}
-                    onChange={(e) => {setDescription(e.target.value)}} />
-                </p>
-                <input type="submit"/>
-            </form>
+            {loaded && (
+                <ProductForm
+                    onSubmitProp={updateProduct}
+                    initialTitle={product.title}
+                    initialPrice={product.price}
+                    initialDescription={product.description}
+                />
+            )}
         </div>
     )
 }
 
 export default Update;
+
